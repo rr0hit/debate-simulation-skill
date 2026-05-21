@@ -1,0 +1,4 @@
+interface:
+  display_name: "Debate Simulation"
+  short_description: "Run subagent debates judged by audience swing"
+  default_prompt: "Use $debate-simulation to run a subagent debate simulation. Ask me for the motion, audience size, and rebuttal rounds."
