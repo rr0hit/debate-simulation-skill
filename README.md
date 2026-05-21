@@ -1,17 +1,18 @@
-# Debate Simulation Skill
+# Agentic Debate System
 
-A Codex skill for running structured debate simulations with synthetic audience movement.
+A Codex skill for spinning up synthetic debates for fun.
 
-The skill is designed for debates where the interesting question is not simply "which side
-ended ahead?", but "which advocate moved the audience more?" It creates a topic-blind
-synthetic audience, gives each side a chance to argue and rebut, polls the same audience
-before and after the debate, and judges the result by persuasion swing.
+Give it a motion, let the agents argue, and watch a synthetic audience move. The interesting
+question is not just "which side ended ahead?", but "which advocate actually persuaded people?"
+The skill creates a topic-blind audience, gives both sides a chance to argue and rebut, polls
+the same audience before and after the debate, and judges the result by audience swing.
 
 ## Motivation
 
-Many debate summaries collapse into a single narrator's judgment. That is useful for quick
-analysis, but weak for questions where persuasion matters. This skill forces a more disciplined
-shape:
+This started from a simple idea: debates are more entertaining when there is an audience to win
+over. A single narrator can summarize both sides, but that misses the fun part: who moved minds?
+
+This skill turns that into a small agentic debate system:
 
 - create the audience before revealing the motion
 - preserve audience-agent continuity between first and final polls
@@ -19,9 +20,9 @@ shape:
 - use factual framing when current facts, law, or public claims matter
 - produce a standalone HTML record so the debate can be reviewed or shared later
 
-The goal is not to predict real voters or real audiences. The output is a synthetic exercise
-that makes assumptions explicit and produces a durable record of what moved the simulated
-audience.
+It is not trying to predict real voters or real audiences. It is a synthetic, inspectable game
+for exploring arguments, priors, persuasion, and how a debate could land with different kinds of
+people.
 
 ## What It Does
 
@@ -29,7 +30,8 @@ audience.
 - Defaults to 20 synthetic audience agents and 2 rebuttal rounds when not specified.
 - Uses pre/post audience polling to judge persuasion swing.
 - Reports both the debate winner by swing and the final audience preference.
-- Creates a standalone HTML debate record with collapsible detail sections.
+- Creates a standalone HTML debate record with collapsible detail sections, because debates are
+  more fun when you can send the scorecard around.
 
 ## Install
 
@@ -62,6 +64,9 @@ Or ask for a debate in plain language:
 ```text
 Debate whether poorams and ulsavams should stop using elephants.
 ```
+
+Try it on serious topics, silly topics, product arguments, policy questions, office disputes, or
+anything where it would be interesting to see which side can move a synthetic crowd.
 
 If you omit configuration, the skill asks for the motion and uses defaults where appropriate.
 
