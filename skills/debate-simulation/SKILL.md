@@ -144,6 +144,7 @@ If the user asks to stop at each checkpoint, pause after each checkpoint and wai
 
 Checkpoint 1: first poll
 
+- Show the side mapping before results, using the actual side labels: `Side A: <position>` and `Side B: <position>`.
 - Show weighted result: `side A`, `side B`, `undecided`.
 - Show headcount result if useful.
 - Show a compact table of audience agents, weights, first vote, and main driver.
@@ -159,6 +160,7 @@ Checkpoint 2: arguments and rebuttals
 
 Final checkpoint: result
 
+- Restate the side mapping before results so the reader does not need to infer what `Side A` and `Side B` mean.
 - Show first poll, final poll, and net swing.
 - Declare the winner by persuasion swing as "the advocate for X".
 - If there is no movement, call the debate a tie, even if one side leads the final poll.
@@ -171,6 +173,8 @@ HTML debate record:
 - Create a self-contained `.html` file with inline CSS and no external runtime dependencies.
 - Use a descriptive kebab-case filename such as `debate-<topic>.html`.
 - Include the motion, date context, synthetic-audience disclaimer, configuration, first poll, final poll, net swing, debate winner by swing, final audience preference, core arguments, rebuttal rounds, movement analysis, and cited sources.
+- Include a prominent side legend near the top of the page: `Side A: <actual position>` and `Side B: <actual position>`. Do not assume readers remember what side letters mean.
+- Label poll tables, transcript headings, movement analysis, and result summaries with both the side letter and actual side name where practical, for example `Side A (Star Trek)` rather than only `Side A`.
 - Include a per-agent audience movement ledger with each agent's profile summary, weight, first vote, full first-vote reasoning/main driver, final vote, full final-vote reasoning, and what changed or stayed fixed.
 - Include a full debate transcript section with each advocate's opening and every rebuttal round exactly as produced by the advocate subagents, clearly labeled by side and round. Do not paraphrase these transcript sections except for headings or compact source labels.
 - Use native `<details>` and `<summary>` sections for supporting detail such as factual frame, full debate transcript, audience movement ledger, headcount derivation, source notes, or per-agent tables.
