@@ -34,7 +34,7 @@ Use these roles:
 - `Moderator`: researches the motion, frames the debate agenda, runs checkpoints, fact-checks important claims, and reports results.
 - `Audience Scout`: creates the audience before knowing the motion, using only broad eligibility constraints such as location, stakeholder category, or demographic scope.
 - `Media Environment Mapper`: after the motion is revealed, maps what each audience profile is likely to have already seen through cohort-appropriate media, social circles, and lived experience.
-- `Advocate A` and `Advocate B`: research and argue the strongest case for their assigned side.
+- `Advocate A` and `Advocate B`: after the first poll checkpoint, research and argue the strongest case for their assigned side.
 - `Audience Agents`: each named audience member is its own persistent subagent. They vote in the first poll, listen to arguments and rebuttals, and vote again. They should react like people shaped by background, media diet, identity, emotion, and priorities.
 
 Do not describe a side as having "won the debate" by itself. Say "the advocate for X won the debate" when judging persuasion.
@@ -50,7 +50,8 @@ Use separate subagents for the core roles:
 - Spawn `Audience Scout` first, with `fork_context: false`. Give it only broad audience constraints and audience count. Do not reveal the motion or sides.
 - Spawn `Moderator` after the motion is known. Give it the motion, the two sides, and the instruction to research, frame issue rounds dynamically, and fact-check major claims.
 - Spawn `Media Environment Mapper` after audience profiles exist. Give it the motion and audience profiles. Ask it to map cohort-appropriate media/social exposure for each profile, not a neutral reading list.
-- Spawn `Advocate A` and `Advocate B` separately. Give each only its assigned side, the motion, and the audience/media brief if available. Ask each to research and build the strongest case for its side. Keep each advocate's agent id and reuse that same advocate subagent for later rebuttal or closing turns.
+- Spawn `Advocate A` and `Advocate B` separately only after Checkpoint 1 is complete. Give each its assigned side, the motion, the moderator frame, and the audience/media brief. Ask each to research and present a public opening case. Keep each advocate's agent id and reuse that same advocate subagent for later rebuttal or closing turns.
+- If a run explicitly needs pre-poll advocate preparation for latency, ask advocates only for private source notes and issue maps. Do not request, display, summarize, or feed any advocate opening, rebuttal, or persuasive case before Checkpoint 1.
 - Spawn one `Audience Agent` subagent for every named audience member. The audience count is the number of audience subagents to create. Do not batch audience members unless the user explicitly authorizes batching. If tool limits make one subagent per audience member impossible, stop and ask the user to reduce the audience count or permit batching/fallback.
 - Keep a participant map of role/person name to subagent id. If a participant must be invoked more than once, continue the same subagent with `send_input`. If the agent was closed but can be resumed, use `resume_agent` before sending input. Do not replace an existing participant with a fresh subagent unless the original cannot be resumed, and report that limitation.
 
@@ -58,13 +59,15 @@ Keep context boundaries strict:
 
 - The Scout must not know the motion.
 - Audience agents in the first poll must not see advocate arguments.
+- No public advocate argument exists before Checkpoint 1. The parent must complete the first poll before asking any advocate for an opening, rebuttal, closing, or audience-facing case.
 - Audience agents in the final poll must be the same subagents used for the first poll. They should see the same profile, their own first vote and reasoning, and the debate summary with openings and rebuttals.
 - Advocates may use web research. Audience agents should not browse broadly unless the user explicitly changes the format.
 
 Use subagents in parallel where possible:
 
-- After the Scout returns profiles, run Moderator, Media Environment Mapper, and both Advocates in parallel when their inputs are ready.
+- After the Scout returns profiles, run Moderator and Media Environment Mapper in parallel when their inputs are ready.
 - Run audience first-poll agents in parallel, one subagent per audience member.
+- After Checkpoint 1, run both Advocates in parallel for openings, then continue the same advocate agents for rebuttals.
 - Run audience final-poll turns in parallel by sending input to the same audience subagents after the debate summary is ready.
 
 Recommended subagent prompts:
@@ -87,10 +90,16 @@ Media Environment Mapper:
 Map what each audience profile is likely to have already seen or heard about this motion through cohort-appropriate media, social networks, community cues, and lived experience. Do not produce a broad neutral research brief.
 ```
 
-Advocate:
+Advocate opening (after Checkpoint 1 only):
 
 ```text
-You are the advocate for SIDE. Research and present the strongest case for SIDE on the motion. Address this audience's likely concerns. Include likely counters to the other side. Cite important factual sources. Remain available as the same advocate for later rebuttal or closing turns.
+You are the advocate for SIDE. The first audience poll is already complete. Research and present the strongest opening case for SIDE on the motion. Address this audience's likely concerns. Include likely counters to the other side. Cite important factual sources. Remain available as the same advocate for later rebuttal or closing turns.
+```
+
+Optional advocate private prep (do not use unless pre-poll latency matters):
+
+```text
+You are the advocate for SIDE. Before the first audience poll, prepare only private source notes and an issue map for this motion. Do not write an opening, rebuttal, closing, or persuasive audience-facing case. Remain available for the public opening only after Checkpoint 1.
 ```
 
 Audience first poll:
@@ -121,10 +130,10 @@ The audience must not be hand-picked for the debate outcome.
 2. Explain the simulation is synthetic and not empirical.
 3. Spawn the topic-blind Audience Scout and create the audience.
 4. Reveal the motion to the Moderator and Media Environment Mapper.
-5. Spawn Moderator, Media Environment Mapper, Advocate A, and Advocate B as separate subagents.
-6. Collect the Moderator agenda, media environment brief, and advocate research.
+5. Spawn Moderator and Media Environment Mapper as separate subagents. Do not spawn public advocate opening/case turns yet.
+6. Collect the Moderator agenda and media environment brief.
 7. Spawn one first-poll audience subagent per named audience member. Store each audience subagent id with that person's profile, weight, first vote, and reasoning. Stop at Checkpoint 1.
-8. Run advocate openings and the configured rebuttal rounds, using the same advocate subagents for every later turn. Use `send_input` to continue the existing advocate agents rather than spawning replacements. Stop at Checkpoint 2.
+8. After Checkpoint 1, spawn Advocate A and Advocate B as separate subagents. Run advocate openings and the configured rebuttal rounds, using the same advocate subagents for every later turn. Use `send_input` to continue the existing advocate agents rather than spawning replacements. Stop at Checkpoint 2.
 9. Send the final-poll prompt to the same audience subagents used for the first poll. Include each person's first vote and reasoning plus the shared debate summary. Use `resume_agent` first if an audience subagent was closed.
 10. Judge by net audience swing and report final preference separately.
 11. Create a standalone HTML record of the completed debate in the current working directory and include its local path in the final response.
@@ -189,7 +198,7 @@ Example:
 
 Use web research when the motion involves current facts, public figures, elections, law, economics, products, or any claim that may have changed recently.
 
-- Advocates may research their assigned side.
+- Advocates may research their assigned side after Checkpoint 1 by default. Any pre-poll advocate work must be private source notes only, not public arguments or persuasive cases.
 - The Moderator may research the motion and verify major claims.
 - The Media Environment Mapper may research what each cohort is likely to have seen.
 - Audience agents should not perform broad neutral research unless the user explicitly changes the format.
