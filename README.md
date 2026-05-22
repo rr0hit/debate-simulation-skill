@@ -2,34 +2,37 @@
 
 A Codex skill for spinning up synthetic debates for fun.
 
-Give it a motion, let the agents argue, and watch a synthetic audience move. The interesting
-question is not just "which side ended ahead?", but "which advocate actually persuaded people?"
-The skill creates a topic-blind audience, gives both sides a chance to argue and rebut, polls
-the same audience before and after the debate, and judges the result by audience swing.
+Give it a motion, let the agents argue, and watch a synthetic audience-agent panel move. The
+interesting question is not "is this proposition true?", but "which advocate agent made the more
+persuasive case to the audience agents?" The skill creates a topic-blind synthetic
+audience-agent panel, gives both sides a chance to argue and rebut, polls the same audience
+agents before and after the debate, and judges advocate performance by audience-agent swing.
 
 ## Motivation
 
-This started from a simple idea: debates are more entertaining when there is an audience to win
-over. A single narrator can summarize both sides, but that misses the fun part: who moved minds?
+This started from a simple idea: debates are more entertaining when there is a synthetic
+audience-agent panel to win over. A single narrator can summarize both sides, but that misses
+the fun part: which advocate agent moved audience agents?
 
 This skill turns that into a small agentic debate system:
 
-- create the audience before revealing the motion
+- create the audience agents before revealing the motion
 - preserve audience-agent continuity between first and final polls
 - separate final preference from persuasion swing
 - use factual framing when current facts, law, or public claims matter
 - produce a standalone HTML record so the debate can be reviewed or shared later
 
-It is not trying to predict real voters or real audiences. It is a synthetic, inspectable game
-for exploring arguments, priors, persuasion, and how a debate could land with different kinds of
-people.
+It is not trying to predict human polling samples, human audiences, or actual outcomes. It does not
+validate a proposition, prove an idea, or decide which side is correct. It is a synthetic,
+inspectable game for comparing advocate agents, their arguments, and how those arguments move
+audience agents within the simulation.
 
 ## What It Does
 
 - Runs a multi-role debate with a moderator, advocates, media-context mapper, and audience agents.
 - Defaults to 20 synthetic audience agents and 2 rebuttal rounds when not specified.
-- Uses pre/post audience polling to judge persuasion swing.
-- Reports both the debate winner by swing and the final audience preference.
+- Uses pre/post audience-agent polling to judge persuasion swing.
+- Reports both the advocate winner by swing and the final audience-agent preference.
 - Creates a standalone HTML debate record with collapsible detail sections, because debates are
   more fun when you can send the scorecard around.
 
@@ -66,7 +69,9 @@ Debate whether poorams and ulsavams should stop using elephants.
 ```
 
 Try it on serious topics, silly topics, product arguments, policy questions, office disputes, or
-anything where it would be interesting to see which side can move a synthetic crowd.
+anything where it would be interesting to compare how advocate agents move a synthetic
+audience-agent panel. Do not use it to validate ideas, prove a side is true, or forecast what a
+human audience would do.
 
 If you omit configuration, the skill asks for the motion and uses defaults where appropriate.
 
@@ -74,8 +79,8 @@ If you omit configuration, the skill asks for the motion and uses defaults where
 
 The final result distinguishes:
 
-- `Debate winner`: the advocate with the largest positive audience swing
-- `Final audience preference`: the side with the largest final vote share
+- `Debate winner`: the advocate agent with the largest positive audience-agent swing
+- `Final audience preference`: the side with the largest final audience-agent vote share
 - `Tie`: no movement or equal movement
 
 The skill also writes a self-contained `.html` debate record in the current working directory.
