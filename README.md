@@ -1,5 +1,7 @@
 # Agentic Debate System
 
+![Two robot advocates debating before a robot audience panel](assets/agent-debate.png)
+
 A Codex skill for spinning up synthetic debates for fun.
 
 Give it a motion, let the agents argue, and watch a synthetic audience-agent panel move. The
