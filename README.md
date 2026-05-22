@@ -75,6 +75,12 @@ human audience would do.
 
 If you omit configuration, the skill asks for the motion and uses defaults where appropriate.
 
+## Cost Note
+
+This skill can create many subagents, especially with larger audience-agent panels or more
+rebuttal rounds. For cost-sensitive runs, use one of the available mini models when the quality
+tradeoff is acceptable, especially for audience-agent polling turns.
+
 ## Output
 
 The final result distinguishes:
