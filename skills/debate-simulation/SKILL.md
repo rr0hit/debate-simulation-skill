@@ -132,9 +132,9 @@ The audience must not be hand-picked for the debate outcome.
 4. Reveal the motion to the Moderator and Media Environment Mapper.
 5. Spawn Moderator and Media Environment Mapper as separate subagents. Do not spawn public advocate opening/case turns yet.
 6. Collect the Moderator agenda and media environment brief.
-7. Spawn one first-poll audience subagent per named audience member. Store each audience subagent id with that person's profile, weight, first vote, and reasoning. Stop at Checkpoint 1.
-8. After Checkpoint 1, spawn Advocate A and Advocate B as separate subagents. Run advocate openings and the configured rebuttal rounds, using the same advocate subagents for every later turn. Use `send_input` to continue the existing advocate agents rather than spawning replacements. Stop at Checkpoint 2.
-9. Send the final-poll prompt to the same audience subagents used for the first poll. Include each person's first vote and reasoning plus the shared debate summary. Use `resume_agent` first if an audience subagent was closed.
+7. Spawn one first-poll audience subagent per named audience member. Store each audience subagent id with that person's profile, weight, first vote, and full first-vote reasoning/main driver. Stop at Checkpoint 1.
+8. After Checkpoint 1, spawn Advocate A and Advocate B as separate subagents. Run advocate openings and the configured rebuttal rounds, using the same advocate subagents for every later turn. Use `send_input` to continue the existing advocate agents rather than spawning replacements. Preserve the exact text of each advocate opening and rebuttal for the HTML record. Stop at Checkpoint 2.
+9. Send the final-poll prompt to the same audience subagents used for the first poll. Include each person's first vote and reasoning plus the shared debate summary. Store each person's final vote, final reasoning, and what moved them or why they held. Use `resume_agent` first if an audience subagent was closed.
 10. Judge by net audience swing and report final preference separately.
 11. Create a standalone HTML record of the completed debate in the current working directory and include its local path in the final response.
 
@@ -155,6 +155,7 @@ Checkpoint 2: arguments and rebuttals
 - Present each rebuttal round clearly.
 - Include the strongest line or core argument from each advocate.
 - Include the likely pressure on undecided or soft-support audience segments.
+- The chat checkpoint may summarize for readability, but the exact advocate openings and rebuttals must be retained for the HTML record.
 
 Final checkpoint: result
 
@@ -170,7 +171,9 @@ HTML debate record:
 - Create a self-contained `.html` file with inline CSS and no external runtime dependencies.
 - Use a descriptive kebab-case filename such as `debate-<topic>.html`.
 - Include the motion, date context, synthetic-audience disclaimer, configuration, first poll, final poll, net swing, debate winner by swing, final audience preference, core arguments, rebuttal rounds, movement analysis, and cited sources.
-- Use native `<details>` and `<summary>` sections for supporting detail such as factual frame, rebuttal rounds, audience movement, headcount derivation, source notes, or per-agent tables.
+- Include a per-agent audience movement ledger with each agent's profile summary, weight, first vote, full first-vote reasoning/main driver, final vote, full final-vote reasoning, and what changed or stayed fixed.
+- Include a full debate transcript section with each advocate's opening and every rebuttal round exactly as produced by the advocate subagents, clearly labeled by side and round. Do not paraphrase these transcript sections except for headings or compact source labels.
+- Use native `<details>` and `<summary>` sections for supporting detail such as factual frame, full debate transcript, audience movement ledger, headcount derivation, source notes, or per-agent tables.
 - Do not invent details that were not produced during the simulation. If only aggregate results were reported, label any derived headcount as derived from the aggregate poll.
 - Keep the page readable as a record of the debate, not as a marketing landing page.
 
