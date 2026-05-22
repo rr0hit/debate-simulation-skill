@@ -59,13 +59,13 @@ Manual install also works:
 Invoke it explicitly:
 
 ```text
-$debate-simulation Motion: Kerala poorams and ulsavams should stop using live elephants and move to alternatives. Use 20 audience agents and 2 rebuttal rounds.
+$debate-simulation Motion: Pineapple belongs on pizza. Use 20 audience agents and 2 rebuttal rounds.
 ```
 
 Or ask for a debate in plain language:
 
 ```text
-Debate whether poorams and ulsavams should stop using elephants.
+Debate whether pineapple belongs on pizza.
 ```
 
 Try it on serious topics, silly topics, product arguments, policy questions, office disputes, or
